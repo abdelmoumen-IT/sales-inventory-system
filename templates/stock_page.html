@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales and Inventory Management System</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='styles/style.css')}}">
+</head>
+
+<body class="main-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash {{category}}">
+            {{message}}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <h2 class="page-title">Stock</h2>
+    <div class="section-card">
+        <table class="dashboard-table">
+            <tr>
+                <th>Product</th>
+                <th>available Stock</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for product in products %}
+            <tr>
+                <td>{{product.name}}</td>
+                {% if product.stock > 5 %}
+                <td style="color: green;">Stock:{{product.stock}}</td>
+                <td style="color: green;">Ok</td>
+                {% else %}
+                <td style="color: red;">Stock:{{product.stock}} left</td>
+                <td style="color:red;">Low stock</td>
+                {% endif %}
+                <td>
+                    <a href="/adjust_stock_page/{{product.product_id}}">Adjust stock</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <aside class="sidebar">
+        <div class="sidebar-title">Stock app</div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard_page" class="sidebar-item">
+                📋Dashboard
+            </a>
+            <a href="/products_page" class="sidebar-item">
+                🧺Products
+            </a>
+            <a href="/stock_page" class="sidebar-item active">
+                📦Stock
+            </a>
+            <a href="/sales_page" class="sidebar-item">
+                🛒Sales
+            </a>
+            <a href="/users_page" class="sidebar-item">
+                🔑Users (admin)
+            </a>
+        </nav>
+        <div class="user-profile">
+            <div class="user-avatar">
+                {{current_user.name[0]|upper}}
+            </div>
+            <div class="user-info">
+                <strong>{{current_user.name}}</strong>
+                <small>{{current_user.role}}</small>
+            </div>
+        </div>
+        <form method="post" action="/logout" class="sidebar-logout">
+            <button>👋Logout</button>
+        </form>
+    </aside>
+</body>
+
+</html>

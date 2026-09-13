@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales and Inventory Management System</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='styles/style.css')}}">
+</head>
+
+<body class="main-content">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash {{category}}">
+            {{message}}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <h1 class="page-title">Users</h1>
+    <h4 style="color:#1914A6;">(admin only)</h4>
+    <div class="section-card">
+        <table class="dashboard-table">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{user.name}}</td>
+                <td>{{user.email}}</td>
+                {% if user.role == 'admin' %}
+                <td style="color: blue;">{{user.role}}</td>
+                {% else %}
+                <td>{{user.role}}</td>
+                {% endif %}
+                {% if user.is_active %}
+                <td style="color: green;">active</td>
+                {% else %}
+                <td style="color: red;">deactivated</td>
+                {% endif %}
+                {% if user.is_active %}
+                <td><a href="/deactivate_user/{{user.user_id}}"
+                        onclick="return confirm('are you sure to deactivate this account?')">
+                        🗑️
+                    </a></td>
+                {% else %}
+                <td><a href="/reactivate_user/{{user.user_id}}">
+                        🟩
+                    </a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <aside class="sidebar">
+        <div class="sidebar-title">Stock app</div>
+        <nav class="sidebar-nav">
+            <a href="/dashboard_page" class="sidebar-item">
+                📋Dashboard
+            </a>
+            <a href="/products_page" class="sidebar-item">
+                🧺Products
+            </a>
+            <a href="/stock_page" class="sidebar-item">
+                📦Stock
+            </a>
+            <a href="/sales_page" class="sidebar-item">
+                🛒Sales
+            </a>
+            <a href="/users_page" class="sidebar-item active">
+                🔑Users (admin)
+            </a>
+        </nav>
+        <div class="user-profile">
+            <div class="user-avatar">
+                {{current_user.name[0]|upper}}
+            </div>
+            <div class="user-info">
+                <strong>{{current_user.name}}</strong>
+                <small>{{current_user.role}}</small>
+            </div>
+        </div>
+        <form method="post" action="/logout" class="sidebar-logout">
+            <button>👋Logout</button>
+        </form>
+    </aside>
+</body>
+
+</html>

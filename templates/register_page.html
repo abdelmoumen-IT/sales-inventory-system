@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales and Inventory Management System</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='styles/style.css')}}">
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash {{category}}">
+            {{message}}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <div class="registration-container">
+        <h1 class="auth-title">register</h1>
+
+        <form method="post" action="/register">
+
+            <label>Name</label>
+            <input type="text" name="name" required placeholder="enter your name">
+
+            <label>Email</label>
+            <input type="email" name="email" required placeholder="enter your email">
+
+            <label>Password</label>
+            <input type="password" name="password" required placeholder="enter your password">
+
+            <button type="submit">register</button>
+        </form>
+        <h2 class="auth-question">already have one?</h2>
+        <a href="/login_page">
+            <p class="auth-link">login</p>
+        </a>
+    </div>
+</body>
+
+</html>

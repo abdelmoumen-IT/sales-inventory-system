@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales and Inventory Management System</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='styles/style.css')}}">
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="flash-container">
+        {% for category, message in messages %}
+        <div class="flash {{category}}">
+            {{message}}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <a href="/products_page" class="back-link">← Products</a>
+    <h1 class="page-title">Edit product</h1>
+    <div class="section-card">
+        <form method="post" action="/product_edit/{{product.product_id}}">
+            <label>Product name</label>
+            <input type="text" name="name" value="{{product.name}}" required>
+
+            <label>Price(DA)</label>
+            <input type="number" name="price" value="{{product.price}}" required>
+
+            <label>Stock available</label>
+            <input type="number" name="stock" min="0" value="{{product.stock}}" required>
+            <div class="form-actions">
+                <button type="submit" class="primary-button">Save changes</button>
+                <a href="/products_page" class="cancel-button">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
