@@ -6,22 +6,12 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from functools import wraps
 from datetime import datetime
 from waitress import serve
-from flask_jwt_extended import(
-    get_jwt,
-    create_access_token,
-    jwt_required,
-    JWTManager,
-    get_jwt_identity
-)
 load_dotenv()
 MY_KEY=os.getenv("MY_KEY")
 app=Flask(__name__)
 app.config["SECRET_KEY"] =MY_KEY
-app.config["JWT_SECRET_KEY"] =MY_KEY
 app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///sales_inventory.db"
 db=SQLAlchemy(app)
-jwt=JWTManager(app)
-
 def login_required(f):
     @wraps(f)
     def decorated_function(*args,**kwargs):
